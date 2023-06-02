@@ -1,0 +1,11 @@
+Neos:
+  Flow:
+    persistence:
+      doctrine:
+        migrations:
+          ignoredTables:
+            'wwwision_assetusage': true
+    object:
+      includeClasses:
+        'Neos.Neos':
+          - '^((?!^Neos\\Neos\\Domain\\Strategy\\AssetUsageInNodePropertiesStrategy).)*$'

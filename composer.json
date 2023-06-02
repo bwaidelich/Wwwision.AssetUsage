@@ -1,0 +1,39 @@
+{
+    "description": "Simple and fast asset usage index for the Neos Content Repository",
+    "type": "neos-package",
+    "name": "wwwision/assetusage",
+    "require": {
+        "php": ">=7.4",
+        "ext-json:":  "*",
+        "neos/flow": "^7.3 || ^8.0",
+        "neos/media": "^7.3 || ^8.0",
+        "neos/content-repository": "^7.3 || ^8.0",
+        "symfony/polyfill-php80": "^1.27"
+    },
+    "require-dev": {
+        "roave/security-advisories": "dev-latest"
+    },
+    "conflict": {
+        "flowpack/neos-asset-usage": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Wwwision\\AssetUsage\\": "Classes/"
+        }
+    },
+    "funding": [
+        {
+            "type": "github",
+            "url": "https://github.com/sponsors/bwaidelich"
+        },
+        {
+            "type": "paypal",
+            "url": "https://www.paypal.me/bwaidelich"
+        }
+    ],
+    "extra": {
+        "neos": {
+            "package-key": "Wwwision.AssetUsage"
+        }
+    }
+}
