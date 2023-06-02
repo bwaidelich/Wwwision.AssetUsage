@@ -2,6 +2,7 @@
     "description": "Simple and fast asset usage index for the Neos Content Repository",
     "type": "neos-package",
     "name": "wwwision/assetusage",
+    "license": "MIT",
     "require": {
         "php": ">=7.4",
         "ext-json":  "*",
