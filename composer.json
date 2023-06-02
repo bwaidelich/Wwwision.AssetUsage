@@ -4,7 +4,7 @@
     "name": "wwwision/assetusage",
     "require": {
         "php": ">=7.4",
-        "ext-json:":  "*",
+        "ext-json":  "*",
         "neos/flow": "^7.3 || ^8.0",
         "neos/media": "^7.3 || ^8.0",
         "neos/content-repository": "^7.3 || ^8.0",
