@@ -13,6 +13,9 @@ final class Package extends BasePackage
 {
     public function boot(Bootstrap $bootstrap): void
     {
+        if ($bootstrap->getContext()->isTesting()) {
+            return;
+        }
         $dispatcher = $bootstrap->getSignalSlotDispatcher();
 
         $dispatcher->connect(AssetService::class, 'assetRemoved', ContentRepositoryIntegration::class, 'onAssetRemoved');
