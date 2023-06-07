@@ -298,7 +298,7 @@ final class AssetUsageIndex implements \Countable
         try {
             return $this->connection->fetchFirstColumn('SELECT asset_id FROM ' . self::TABLE_NAME . ' WHERE node_id = :nodeId AND workspace = :workspaceName AND dimensionshash = :dimensionsHash', ['nodeId' => $node->id, 'workspaceName' => $node->workspaceName, 'dimensionsHash' => $node->dimensionsHash,]);
         } catch (DbalException $e) {
-            throw new RuntimeException(sprintf('Failed to load used asset ids for node "%s": %e', $node->id, $e->getMessage()), 1685717889, $e);
+            throw new RuntimeException(sprintf('Failed to load used asset ids for node "%s": %s', $node->id, $e->getMessage()), 1685717889, $e);
         }
     }
 
