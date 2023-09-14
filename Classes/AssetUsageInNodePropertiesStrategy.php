@@ -62,6 +62,9 @@ final class AssetUsageInNodePropertiesStrategy implements AssetUsageStrategyInte
             'workspaceName' => $usage->workspaceName,
             'dimensionsHash' => $usage->dimensionsHash,
         ]);
+        if ($dimensionsSerialized === false) {
+            return new AssetUsageInNodeProperties($asset, $usage->nodeId, $usage->workspaceName, [], $usage->nodeTypeName);
+        }
         $dimensionValues = json_decode($dimensionsSerialized, true, 512, JSON_THROW_ON_ERROR);
         return new AssetUsageInNodeProperties($asset, $usage->nodeId, $usage->workspaceName, $dimensionValues, $usage->nodeTypeName);
     }
