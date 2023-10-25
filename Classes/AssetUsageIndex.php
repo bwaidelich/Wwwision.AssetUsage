@@ -198,7 +198,7 @@ final class AssetUsageIndex implements \Countable
         if ($value instanceof ResourceBasedInterface) {
             return [$this->getAssetId($value)];
         }
-        if ($type === 'string' || is_subclass_of($type, Stringable::class)) {
+        if (is_string($value) || $value instanceof Stringable) {
             preg_match_all('/asset:\/\/(?<assetId>[\w-]*)/i', (string)$value, $matches, PREG_SET_ORDER);
             return array_map(static fn (array $match) => $match['assetId'], $matches);
         }
