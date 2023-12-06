@@ -84,4 +84,15 @@ final class AssetUsageCommandController extends CommandController
         $this->assetUsageIndex->deleteAll();
         $this->outputLine('<success>Removed %d entr%s from the asset usage index</success>', [$numberOfUsages, $numberOfUsages === 1 ? 'y' : 'ies']);
     }
+
+    /**
+     * Get the usage count for a specific asset (and its variants)
+     *
+     * @param string $assetId
+     */
+    public function getCountCommand(string $assetId): void
+    {
+        $count = $this->assetUsageIndex->countByAssetId($assetId);
+        $this->outputLine('The asset with id <b>%s</b> is used <b>%d</b> time%s', [$assetId, $count, $count === 0 ? '' : 's']);
+    }
 }

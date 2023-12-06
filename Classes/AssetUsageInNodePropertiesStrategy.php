@@ -7,6 +7,7 @@ use Doctrine\DBAL\Connection;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Persistence\Doctrine\PersistenceManager;
 use Neos\Media\Domain\Model\AssetInterface;
+use Neos\Media\Domain\Model\Image;
 use Neos\Media\Domain\Strategy\AssetUsageStrategyInterface;
 use Neos\Neos\Domain\Model\Dto\AssetUsageInNodeProperties;
 use Wwwision\AssetUsage\Model\AssetUsage;
@@ -39,8 +40,8 @@ final class AssetUsageInNodePropertiesStrategy implements AssetUsageStrategyInte
 
     public function getUsageCount(AssetInterface $asset): int
     {
-        $assetId = $this->persistenceManager->getIdentifierByObject($asset);
-        return $this->assetUsageIndex->countByAssetId($assetId);
+        $assetIds = $this->getAssetIds($asset);
+        return $this->assetUsageIndex->countByAssetIds($assetIds);
     }
 
     /**
@@ -48,11 +49,26 @@ final class AssetUsageInNodePropertiesStrategy implements AssetUsageStrategyInte
      */
     public function getUsageReferences(AssetInterface $asset): array
     {
-        $assetId = $this->persistenceManager->getIdentifierByObject($asset);
+        $assetIds = $this->getAssetIds($asset);
         return array_map(
             fn (AssetUsage $usage) => $this->transformUsage($asset, $usage),
-            iterator_to_array($this->assetUsageIndex->findByAssetId($assetId))
+            iterator_to_array($this->assetUsageIndex->findByAssetIds($assetIds))
         );
+    }
+
+    /**
+     * @param AssetInterface $asset
+     * @return array<string>
+     */
+    private function getAssetIds(AssetInterface $asset): array
+    {
+        $assetIds = [$this->persistenceManager->getIdentifierByObject($asset)];
+        if ($asset instanceof Image) {
+            foreach ($asset->getVariants() as $imageVariant) {
+                $assetIds[] = $this->persistenceManager->getIdentifierByObject($imageVariant);
+            }
+        }
+        return $assetIds;
     }
 
     private function transformUsage(AssetInterface $asset, AssetUsage $usage): AssetUsageInNodeProperties
