@@ -123,6 +123,7 @@ final class AssetUsageIndex implements \Countable
             throw new RuntimeException(sprintf('Failed to truncate table "%s": %s', self::TABLE_NAME, $e->getMessage()), 1685700130, $e);
         }
     }
+
     public function update(int $offset, int $limit = null): void
     {
         $query = 'SELECT persistence_object_identifier, workspace, identifier, nodetype, properties, dimensionshash FROM neos_contentrepository_domain_model_nodedata WHERE removed = 0';
@@ -166,21 +167,22 @@ final class AssetUsageIndex implements \Countable
     }
 
     /**
+     * @param array<string> $assetIds
      * @throws DbalException
      */
-    public function countByAssetId(string $assetId): int
+    public function countByAssetIds(array $assetIds): int
     {
-        return (int)$this->connection->fetchOne('SELECT COUNT(*) FROM ' . self::TABLE_NAME . ' WHERE asset_id = :assetId', ['assetId' => $assetId,]);
+        return (int)$this->connection->fetchOne('SELECT COUNT(*) FROM ' . self::TABLE_NAME . ' WHERE asset_id IN :assetIds', ['assetIds' => $assetIds], ['assetIds' => Connection::PARAM_STR_ARRAY]);
     }
 
     /**
-     * @param string $assetId
+     * @param array<string> $assetIds
      * @return Traversable<AssetUsage>
      * @throws RuntimeException|DbalException
      */
-    public function findByAssetId(string $assetId): Traversable
+    public function findByAssetIds(array $assetIds): Traversable
     {
-        foreach ($this->connection->iterateAssociative('SELECT * FROM ' . self::TABLE_NAME . ' WHERE asset_id = :assetId', ['assetId' => $assetId]) as $row) {
+        foreach ($this->connection->iterateAssociative('SELECT * FROM ' . self::TABLE_NAME . ' WHERE asset_id IN :assetIds', ['assetIds' => $assetIds], ['assetIds' => Connection::PARAM_STR_ARRAY]) as $row) {
             if (!is_array($row)) {
                 throw new RuntimeException(sprintf('Expected instance of array, got %s', get_debug_type($row)), 1685687541);
             }
