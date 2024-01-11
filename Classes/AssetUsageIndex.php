@@ -172,7 +172,7 @@ final class AssetUsageIndex implements \Countable
      */
     public function countByAssetIds(array $assetIds): int
     {
-        return (int)$this->connection->fetchOne('SELECT COUNT(*) FROM ' . self::TABLE_NAME . ' WHERE asset_id IN :assetIds', ['assetIds' => $assetIds], ['assetIds' => Connection::PARAM_STR_ARRAY]);
+        return (int)$this->connection->fetchOne('SELECT COUNT(*) FROM ' . self::TABLE_NAME . ' WHERE asset_id IN (:assetIds)', ['assetIds' => $assetIds], ['assetIds' => Connection::PARAM_STR_ARRAY]);
     }
 
     /**
@@ -182,7 +182,7 @@ final class AssetUsageIndex implements \Countable
      */
     public function findByAssetIds(array $assetIds): Traversable
     {
-        foreach ($this->connection->iterateAssociative('SELECT * FROM ' . self::TABLE_NAME . ' WHERE asset_id IN :assetIds', ['assetIds' => $assetIds], ['assetIds' => Connection::PARAM_STR_ARRAY]) as $row) {
+        foreach ($this->connection->iterateAssociative('SELECT * FROM ' . self::TABLE_NAME . ' WHERE asset_id IN (:assetIds)', ['assetIds' => $assetIds], ['assetIds' => Connection::PARAM_STR_ARRAY]) as $row) {
             if (!is_array($row)) {
                 throw new RuntimeException(sprintf('Expected instance of array, got %s', get_debug_type($row)), 1685687541);
             }

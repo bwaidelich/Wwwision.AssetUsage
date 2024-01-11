@@ -92,7 +92,7 @@ final class AssetUsageCommandController extends CommandController
      */
     public function getCountCommand(string $assetId): void
     {
-        $count = $this->assetUsageIndex->countByAssetId($assetId);
+        $count = $this->assetUsageIndex->countByAssetIds([$assetId]);
         $this->outputLine('The asset with id <b>%s</b> is used <b>%d</b> time%s', [$assetId, $count, $count === 0 ? '' : 's']);
     }
 }
