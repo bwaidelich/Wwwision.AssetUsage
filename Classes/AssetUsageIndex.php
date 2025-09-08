@@ -126,7 +126,7 @@ final class AssetUsageIndex implements \Countable
 
     public function update(int $offset, int $limit = null): void
     {
-        $query = 'SELECT persistence_object_identifier, workspace, identifier, nodetype, properties, dimensionshash FROM neos_contentrepository_domain_model_nodedata WHERE removed = 0';
+        $query = 'SELECT persistence_object_identifier, workspace, identifier, nodetype, properties, dimensionshash FROM neos_contentrepository_domain_model_nodedata WHERE removed = false';
         if ($limit !== null) {
             $query .= ' LIMIT ' . $limit;
         }
@@ -154,7 +154,7 @@ final class AssetUsageIndex implements \Countable
     public function countNodes(): int
     {
         try {
-            return (int)$this->connection->fetchOne('SELECT COUNT(*) FROM neos_contentrepository_domain_model_nodedata WHERE removed = 0');
+            return (int)$this->connection->fetchOne('SELECT COUNT(*) FROM neos_contentrepository_domain_model_nodedata WHERE removed = false');
         } catch (DbalException $e) {
             throw new RuntimeException(sprintf('Failed to count node data records: %s', $e->getMessage()), 1685720457, $e);
         }
